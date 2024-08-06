@@ -12,10 +12,10 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Result = () => {
   const location = useLocation();
-  // const { originalUrl, shortUrl } = location.state;
+  const { originalUrl, shortUrl } = location.state;
   const [open, setOpen] = useState(false);
-  const originalUrl = "https://www.test-original.com"
-  const shortUrl = "https://www.test-short.com"
+  // const originalUrl = "https://www.test-original.com"
+  // const shortUrl = "https://www.test-short.com"
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl).then(() => {
       setOpen(true);

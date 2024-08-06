@@ -1,15 +1,26 @@
 import { Box, Typography, TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { shortenUrl } from "../api/urlApi";
 import { useState } from "react";
 
 const Search = () => {
   const [url, setUrl] = useState("");
-  const [shortUrl, setShortUrl] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUrl(e.target.value);
   };
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async () => {
+    try {
+      const response = await shortenUrl(url);
+      navigate("/result", {
+        state: { shortUrl: response.shortUrl, originalUrl: url },
+      });
+    } catch (e) {
+      console.error("Error while shortening URL", e);
+    }
+  };
 
   return (
     <Box
@@ -32,14 +43,6 @@ const Search = () => {
       <Button variant="contained" onClick={handleSubmit}>
         Shorten
       </Button>
-      {shortUrl && (
-        <Typography variant="body1" style={{ marginTop: 16 }}>
-          Shortened URL:{" "}
-          <a href={shortUrl} target="_blank" rel="noreferrer">
-            {shortUrl}
-          </a>
-        </Typography>
-      )}
     </Box>
   );
 };
