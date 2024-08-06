@@ -8,7 +8,7 @@ const Header = () => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Url Shortener
+          <a href="/" style={{ color: "white", textDecoration: "none" }}>URL Shortener</a>
         </Typography>
         <Switch checked={isDarkMode} onChange={handleToggle}/>
       </Toolbar>
@@ -17,3 +17,4 @@ const Header = () => {
 };
 
 export default Header;
+

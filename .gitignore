@@ -1,10 +1,26 @@
+# Dependencies
 node_modules/
 
-front/dist/
-
+# Environment variables
 *.env
 
+# Logs
 *.log
 
+# Editor settings
 .vscode/
 
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Frontend build output (adjust if needed)
+front/dist/
+front/build/
+
+# Backend build output (if any)
+backend/dist/
+
+# Misc
+*.tmp
+*.swp
