@@ -28,7 +28,7 @@ const Search = () => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      height="100vh"
+      height="75vh"
     >
       <Typography variant="h4" gutterBottom>
         URL Shortener
@@ -48,3 +48,4 @@ const Search = () => {
 };
 
 export default Search;
+
