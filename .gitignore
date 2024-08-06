@@ -1,0 +1,10 @@
+node_modules/
+
+front/dist/
+
+*.env
+
+*.log
+
+.vscode/
+back/
