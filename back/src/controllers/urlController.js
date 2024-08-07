@@ -4,7 +4,7 @@ export async function createUrl(req, res) {
   try {
     const { url } = req.body;
     const shortCode = await createShortUrl(url);
-    res.json({ shortUrl: `${process.env.BASE_URL}/${shortCode}` });
+    res.json({ shortUrl: `${process.env.BASE_URL}/${shortCode}`, url: url, shortCode: shortCode });
   } catch (e) {
     res
       .status(500)

@@ -7,4 +7,3 @@ router.post('/shorten', createUrl);
 router.get('/:shortCode', redirectToUrl);
 
 export default router;
-

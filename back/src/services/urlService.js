@@ -38,3 +38,41 @@ export async function getOriginalUrl(shortCode) {
     return null;
   }
 }
+export async function getUrlId(shortCode) {
+  const db = getDb();
+  const collection = db.collection("urls");
+  try {
+    const url = await collection.findOne({ shortCode });
+    return url ? url._id : null;
+  } catch (e) {
+    console.error("Could not get URL ID", e);
+    return null;
+  }
+}
+
+export async function getUrlFromId(id) {
+  const db = getDb();
+  const collection = db.collection("urls");
+  try {
+    const url = await collection.findOne({ _id: id });
+    return url ? url.originalUrl : null;
+  } catch (e) {
+    console.error("Could not get URL from ID", e);
+    return null;
+  }
+}
+
+export async function getUrlsFromIds(ids) {
+  const db = getDb();
+  const collection = db.collection("urls");
+  try {
+    const urls = await collection.find({ _id: { $in: ids } }).toArray();
+    return urls.map((url) => ({
+      originalUrl: url.originalUrl,
+      shortUrl: `${process.env.BASE_URL}/${url.shortCode}`,
+    }));
+  } catch (e) {
+    console.error("Could not get URLs from IDs", e);
+    return null;
+  }
+}

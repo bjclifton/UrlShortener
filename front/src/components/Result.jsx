@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import {
   Box,
@@ -12,10 +12,15 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Result = () => {
   const location = useLocation();
-  const { originalUrl, shortUrl } = location.state;
+  var originalUrl, shortUrl;
+  try {
+    originalUrl = location.state.originalUrl;
+    shortUrl = location.state.shortUrl;
+  } catch (e) {
+    window.location.replace("/");
+  }
   const [open, setOpen] = useState(false);
-  // const originalUrl = "https://www.test-original.com"
-  // const shortUrl = "https://www.test-short.com"
+
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl).then(() => {
       setOpen(true);
