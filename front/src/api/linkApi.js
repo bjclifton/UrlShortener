@@ -20,3 +20,12 @@ export const getLinks = async () => {
   }
 };
 
+export const deleteLink = async (linkId) => {
+  try {
+    const response = await axiosInstance.delete(`/link/${linkId}`);
+    return response.data;
+  } catch (e) {
+    console.error("Error while deleting link", e);
+    throw e;
+  }
+};

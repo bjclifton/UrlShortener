@@ -70,6 +70,7 @@ export async function getUrlsFromIds(ids) {
     return urls.map((url) => ({
       originalUrl: url.originalUrl,
       shortUrl: `${process.env.BASE_URL}/${url.shortCode}`,
+      _id: url._id,
     }));
   } catch (e) {
     console.error("Could not get URLs from IDs", e);

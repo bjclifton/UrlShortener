@@ -39,3 +39,17 @@ export async function getLinks(userId) {
   }
 }
 
+export async function deleteLink(linkId, userId) {
+  const db = getDb();
+  const collection = db.collection("users");
+  try {
+    await collection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $pull: { links: new ObjectId(linkId) } }
+    );
+    return true;
+  } catch (e) {
+    console.error("Could not delete link", e);
+    return false;
+  }
+}

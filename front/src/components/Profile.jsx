@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Typography, 
-  Container, 
-  Box, 
-  List, 
-  ListItem, 
-  ListItemText, 
-  Paper, 
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Container,
+  Box,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
   Link,
   CircularProgress,
   Tooltip,
   IconButton,
   Snackbar,
-  TextField
-} from '@mui/material';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import { getLinks } from '../api/linkApi';
+  TextField,
+} from "@mui/material";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { getLinks, deleteLink } from "../api/linkApi";
 
 const Profile = ({ user }) => {
   const [links, setLinks] = useState([]);
@@ -28,7 +29,7 @@ const Profile = ({ user }) => {
         const fetchedLinks = await getLinks();
         setLinks(fetchedLinks);
       } catch (error) {
-        console.error('Error fetching links:', error);
+        console.error("Error fetching links:", error);
       } finally {
         setLoading(false);
       }
@@ -37,6 +38,15 @@ const Profile = ({ user }) => {
     fetchLinks();
   }, []);
 
+  const handleDelete = async (linkId) => {
+    try {
+      await deleteLink(linkId);
+      setLinks(links.filter((link) => link._id !== linkId));
+    } catch (e) {
+      console.error("Error deleting link:", e);
+    }
+  };
+
   const handleCopyClick = (url) => {
     navigator.clipboard.writeText(url).then(() => {
       setOpenSnackbar(true);
@@ -44,7 +54,7 @@ const Profile = ({ user }) => {
   };
 
   const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setOpenSnackbar(false);
@@ -57,7 +67,7 @@ const Profile = ({ user }) => {
           Profile
         </Typography>
         <Typography variant="h6" gutterBottom>
-          Welcome, {user ? user.username : 'Guest'}!
+          Welcome, {user ? user.username : "Guest"}!
         </Typography>
       </Box>
 
@@ -65,38 +75,58 @@ const Profile = ({ user }) => {
         Your Links
       </Typography>
 
-      <Paper 
-        elevation={3} 
-        sx={{ 
-          maxHeight: '400px', 
-          overflow: 'auto', 
-          bgcolor: 'background.default' 
+      <Paper
+        elevation={3}
+        sx={{
+          maxHeight: "400px",
+          overflow: "auto",
+          bgcolor: "background.default",
         }}
       >
         {loading ? (
-          <Box display="flex" justifyContent="center" alignItems="center" height="100%">
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
             <CircularProgress />
           </Box>
         ) : links.length > 0 ? (
-          <List>
+          <List
+            sx={{
+              padding: 0,
+            }}
+          >
             {links.map((link, index) => (
-              <ListItem 
-                key={index} 
-                divider 
-                sx={{ 
-                  flexDirection: 'column', 
-                  alignItems: 'flex-start',
-                  py: 2
+              <ListItem
+                key={index}
+                divider
+                sx={{
+                  flexDirection: "column",
+                  alignItems: "flex-start",
+                  py: 2,
                 }}
               >
                 <ListItemText
                   primary={
-                    <Link href={link.originalUrl} target="_blank" rel="noopener noreferrer">
+                    <Link
+                      href={link.originalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {link.originalUrl}
                     </Link>
                   }
                 />
-                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, width: '100%' }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    width: "100%",
+                  }}
+                >
                   <TextField
                     fullWidth
                     variant="outlined"
@@ -107,11 +137,19 @@ const Profile = ({ user }) => {
                     size="small"
                   />
                   <Tooltip title="Copy short URL">
-                    <IconButton 
+                    <IconButton
                       onClick={() => handleCopyClick(link.shortUrl)}
                       sx={{ ml: 1 }}
                     >
                       <ContentCopyIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete link">
+                    <IconButton
+                      onClick={() => handleDelete(link._id)}
+                      sx={{ ml: 1 }}
+                    >
+                      <DeleteIcon />
                     </IconButton>
                   </Tooltip>
                 </Box>
